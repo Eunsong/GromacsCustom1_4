@@ -17,26 +17,41 @@ scale_factor = 0.5
 
 E_CONVERSION = 138.935
 
+def _check_nrexcl(itp_file):
+    with open(itp_file) as f:
+        contents = Molecule._remove_comments(f.read())
+        m = re.search(r'\[\s*moleculetype\s*\]\s*\w+\s+(\d+)', contents)
+        if m:
+            if m.group(1) != '3':
+                raise ValueError('ERROR! nrexcl is not set to 3!!!')
+        else:
+            raise ValueError('ERROR! cannot read nrexcl from ' + itp_file )
+
+
 def build14bonds(itp_file, table_preffix, index_file, scale_factor, new_itp_file):
 
-    warning_msg = '###################################################################\n'+\
-                  '#                                                                 #\n'+\
-                  '#  Build14bonds code generates tables for custom 1-4 bonds        #\n'+\
-                  '# which effectively takes into account scaled down nonbonded 1-4  #\n'+\
-                  '# interactions. Given original index, itp, and table files,       #\n'+\
-                  '# this code finds appropriate 1-4 pairs, read non-bonded          #\n'+\
-                  '# interactions between those pairs, and creates tabulated bonds   #\n'+\
-                  '# for these pairs using scale factors and appropriate non-bonded  #\n'+\
-                  '# potentials.                                                     #\n'+\
-                  '#                                                                 #\n'+\
-                  '# WARNING! : ENSURE THAT ALL C6 AND C12 VALUES ASSIGNED TO ATOM   #\n'+\
-                  '#            TYPES USING TABLULATED NON-BONDED POTENTIALS ARE SET #\n'+\
-                  '#            TO 1.000.                                            #\n'+\
-                  '#            ALSO, CHARGES SHOULD BE EXPLICITLY DEFINED IN THE    #\n'+\
-                  '#            PROVIDED ITP FILE.                                   #\n'+\
-                  '#                                                                 #\n'+\
-                  '###################################################################\n'
+    warning_msg = '#####################################################################\n'+\
+                  '#                                                                   #\n'+\
+                  '#  Build14bonds code generates tables for custom 1-4 bonds          #\n'+\
+                  '# which effectively takes into account scaled down nonbonded 1-4    #\n'+\
+                  '# interactions. Given original index, itp, and table files,         #\n'+\
+                  '# this code finds appropriate 1-4 pairs, read non-bonded            #\n'+\
+                  '# interactions between those pairs, and creates tabulated bonds     #\n'+\
+                  '# for these pairs using scale factors and appropriate non-bonded    #\n'+\
+                  '# potentials.                                                       #\n'+\
+                  '#                                                                   #\n'+\
+                  '# WARNING! : 1) ENSURE THAT ALL C6 AND C12 VALUES ASSIGNED TO ATOM  #\n'+\
+                  '#               TYPES USING TABLULATED NON-BONDED POTENTIALS ARE    #\n'+\
+                  '#               SET TO 1.000.                                       #\n'+\
+                  '#            2) CHARGES SHOULD BE EXPLICITLY DEFINED IN THE         #\n'+\
+                  '#               PROVIDED ITP FILE.                                  #\n'+\
+                  '#            3) BASE ITP FILE SHOULD EXCLUDE 1-4 INTERACTIONS BY    #\n'+\
+                  '#               SETTING "nrexcl : 3" AND EXPLICIT EXCLUSIONS.       #\n'+\
+                  '#                                                                   #\n'+\
+                  '####################################################################\n'
     print(warning_msg)
+
+    _check_nrexcl(itp_file)
 
     molecule = Molecule()
     molecule.readitp(itp_file)
