@@ -5,6 +5,15 @@ class Molecule(object):
     def __init__(self, name=None):
         self.name = name
         self.atoms = {}
+    def find_atom(self, index):
+        if index in self.atoms.keys():
+            return self.atoms[index]
+        else:
+            for i in self.atoms.keys():
+                if self.atoms[i].shell:
+                    shell_i = self.atoms[i].shell
+                    if index == shell_i.number:
+                        return shell_i
     def readitp(self, itp_file):
         """ load molecule information from given itp_file """
         with open(itp_file) as f:
