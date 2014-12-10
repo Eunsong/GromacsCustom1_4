@@ -28,11 +28,11 @@ def build14bonds(itp_file, table_preffix, index_file, scale_factor, new_itp_file
     warning_msg = '#####################################################################\n'+\
                   '#                                                                   #\n'+\
                   '#  Build14bonds code generates tables for custom 1-4 bonds          #\n'+\
-                  '# which effectively takes into account scaled down nonbonded 1-4    #\n'+\
+                  '# that effectively take into account scaled down nonbonded 1-4      #\n'+\
                   '# interactions. Given original index, itp, and table files,         #\n'+\
                   '# this code finds appropriate 1-4 pairs, read non-bonded            #\n'+\
-                  '# interactions between those pairs, and creates tabulated bonds     #\n'+\
-                  '# for these pairs using scale factors and appropriate non-bonded    #\n'+\
+                  '# interactions for these pairs, and creates tabulated bonds         #\n'+\
+                  '# for these pairs using scale factor and appropriate non-bonded     #\n'+\
                   '# potentials.                                                       #\n'+\
                   '#                                                                   #\n'+\
                   '# to see description, type : python build14bonds.py --help          #\n'+\
