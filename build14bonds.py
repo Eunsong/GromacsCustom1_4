@@ -10,12 +10,6 @@ import os
 # tabulated bonds for these pairs using scale factor and corresponding 
 # non-bonded potentials.
 
-new_itp_file = 'bmim_new.itp'
-index_file = 'index.ndx'
-itp_file = 'bmim.itp'
-table_preffix = 'table'
-scale_factor = 0.5
-
 E_CONVERSION = 138.935
 
 def _check_nrexcl(itp_file):
