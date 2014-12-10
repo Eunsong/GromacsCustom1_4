@@ -1,3 +1,4 @@
+import argparse
 from molecule import *
 import re
 import os
@@ -39,6 +40,8 @@ def build14bonds(itp_file, table_preffix, index_file, scale_factor, new_itp_file
                   '# interactions between those pairs, and creates tabulated bonds     #\n'+\
                   '# for these pairs using scale factors and appropriate non-bonded    #\n'+\
                   '# potentials.                                                       #\n'+\
+                  '#                                                                   #\n'+\
+                  '# to see description, type : python build14bonds.py --help          #\n'+\
                   '#                                                                   #\n'+\
                   '# WARNING! : 1) ENSURE THAT ALL C6 AND C12 VALUES ASSIGNED TO ATOM  #\n'+\
                   '#               TYPES USING TABLULATED NON-BONDED POTENTIALS ARE    #\n'+\
@@ -209,4 +212,17 @@ def build_tableb(input_table, bond_index, type_i, type_j, q_ij, shell_type=False
  
 
 if __name__ == '__main__':
-    build14bonds(itp_file, table_preffix, index_file, scale_factor, new_itp_file)
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--itp', '-i', \
+                        help='original itp file containing molecule information')
+    parser.add_argument('--table', '-t',\
+                        help='prefix of table files used for non-bonded interactions')
+    parser.add_argument('--index', '-n',\
+                        help='gromacs ndx file containing particle indices assigned to'+\
+                             ' particle types')
+    parser.add_argument('--scale', '-s', type=float,\
+                        help='scale down factor for 1-4 interactions.')
+    parser.add_argument('-output', '-o',\
+                        help='file name for new itp file including 1-4 custom bonds')
+    arg = parser.parse_args()
+    build14bonds(arg.itp, arg.table, arg.index, arg.scale, arg.output)
